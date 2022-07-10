@@ -23,6 +23,3 @@ def decrypt(encrypted, n):
             if len(encrypted)%2 != 0:
                 decrypted+=set2[mid]
         return decrypted
-
-print(encrypt('123456', 4))
-print(decrypt(encrypt('123456', 4), 4))
