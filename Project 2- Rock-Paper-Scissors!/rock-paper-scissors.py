@@ -1,5 +1,4 @@
 from random import choice
-
 def rps(user_action = input("Enter your choice of action (rock, paper, scissors):\n")):
 
     possible_actions = ['rock', 'paper', 'scissors']
