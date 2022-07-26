@@ -1,4 +1,4 @@
-# Countdown Timer 
+# Countdown Timer ⏲
 This program serves as a simple countdown timer (`countdown()`), which takes an argument `t` _(where **t** is the time in seconds)_. 
 It has two functions defined :-
 1. **annoy()**
