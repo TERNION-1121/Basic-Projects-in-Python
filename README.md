@@ -13,6 +13,7 @@ It consists of different sub-folders which consist of one **Python file**, accom
 3. Project 3: [Password Generator](https://github.com/TERNION-1121/Basic-Projects-in-Python/tree/main/Project%203-%20Password%20Generator)
 4. Project 4: [Encryption-Decryption](https://github.com/TERNION-1121/Basic-Projects-in-Python/tree/main/Project%204-%20Encryption-Decryption)
 5. Project 5: [Binary Search Algorithm](https://github.com/TERNION-1121/Basic-Projects-in-Python/tree/main/Project%205-%20Binary%20Search%20Algorithm)
+6. Project 6: [Simple Countdown Timer](https://github.com/TERNION-1121/Basic-Projects-in-Python/tree/main/Project%206-%20Simple%20Countdown%20Timer)
 <br>
 <hr>
 
