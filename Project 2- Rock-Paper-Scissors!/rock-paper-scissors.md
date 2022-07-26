@@ -1,4 +1,4 @@
-# Rock-Paper-Scissors game in Python
+# Rock-Paper-Scissors game 👊🖐✌
 
 This program makes use of simple selection statements to control the program flow to make the **Rock-Paper-Scissors** game work.
 
