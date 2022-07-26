@@ -27,27 +27,14 @@ Using the `choice()` function, available in `random` module, the computer stores
  <br>
  
  ```py
-  if user_action == computer_action:
-            print(f"You chose {user_action}, and the Computer chose {computer_action}. It's a draw!")
-        
-        elif user_action == 'rock':
-            if computer_action == 'scissors':
-                print(f"You chose {user_action}, and the Computer chose {computer_action}. You won!")
-            elif computer_action == 'paper':
-                print(f"You chose {user_action}, and the Computer chose {computer_action}. You lost!")
-
-        elif user_action == 'paper':
-            if computer_action == 'rock':
-                print(f"You chose {user_action}, and the Computer chose {computer_action}. You won!")
-            elif computer_action == 'scissors':
-                print(f"You chose {user_action}, and the Computer chose {computer_action}. You lost!") 
-        
-        elif user_action == 'scissors':
-            if computer_action == 'paper':
-                print(f"You chose {user_action}, and the Computer chose {computer_action}. You won!")
-            elif computer_action == 'rock':
-                print(f"You chose {user_action}, and the Computer chose {computer_action}. You lost!") 
-        
+  if user_action in possible_actions:
+            print(f"You chose {user_action}, and the computer chose {computer_action}.", end = " ") 
+            if [user_action, computer_action] in wins:
+                print("You won!")
+            elif user_action == computer_action: 
+                print('Draw!')
+            else:
+                print("You lost!")
         else:
-            print("Invalid input action!")
+            print('Invalid Input Action!')
 ```
