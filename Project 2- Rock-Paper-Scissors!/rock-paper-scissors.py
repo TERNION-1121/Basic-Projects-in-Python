@@ -1,37 +1,26 @@
-import random
+from random import choice
 
 def rps(user_action = input("Enter your choice of action (rock, paper, scissors):\n")):
 
     possible_actions = ['rock', 'paper', 'scissors']
-    while user_action: 
-        computer_action = random.choice(possible_actions)
+    while True: 
+        computer_action = choice(possible_actions)
 
-        if user_action == computer_action:
-            print(f"You chose {user_action}, and the Computer chose {computer_action}. It's a draw!")
-        
-        elif user_action == 'rock':
-            if computer_action == 'scissors':
-                print(f"You chose {user_action}, and the Computer chose {computer_action}. You won!")
-            elif computer_action == 'paper':
-                print(f"You chose {user_action}, and the Computer chose {computer_action}. You lost!")
+        wins = [['rock', 'scissors'], ['paper', 'rock'], ['scissors', 'paper']]
 
-        elif user_action == 'paper':
-            if computer_action == 'rock':
-                print(f"You chose {user_action}, and the Computer chose {computer_action}. You won!")
-            elif computer_action == 'scissors':
-                print(f"You chose {user_action}, and the Computer chose {computer_action}. You lost!") 
-        
-        elif user_action == 'scissors':
-            if computer_action == 'paper':
-                print(f"You chose {user_action}, and the Computer chose {computer_action}. You won!")
-            elif computer_action == 'rock':
-                print(f"You chose {user_action}, and the Computer chose {computer_action}. You lost!") 
-        
+        if user_action in possible_actions:
+            print(f"You chose {user_action}, and the computer chose {computer_action}.", end = " ") 
+            if [user_action, computer_action] in wins:
+                print("You won!")
+            elif user_action == computer_action: 
+                print('Draw!')
+            else:
+                print("You lost!")
         else:
-            print("Invalid input action!")
+            print('Invalid Input Action!')
             
         again = input("\nWant to continue (y/n) ? ")
-        if again == 'y':
+        if again.lower() == 'y':
             user_action = input("Enter your choice of action (rock, paper, scissors):\n")
             continue
         else: 
