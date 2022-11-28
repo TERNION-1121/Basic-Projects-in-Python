@@ -43,10 +43,21 @@ class BankAccount():
             self.balance-=sum
             BankAccount.accounts[self.account_number]['balance'] = self.balance
 
+    def invest(self, sum: int, time: int):
+        self.balance-=sum
+        rate = 10
+        amount = sum * ((1+(rate/1))**time)
+        self.balance+=amount
+        BankAccount.accounts[self.account_number]['balance'] = self.balance
+        
+    def transferMoney(self, accNo, amt):
+        self.balance-=amt
+        BankAccount.accounts[self.account_number]['balance'] = self.balance
+        BankAccount.accounts[accNo]['balance']+=amt
+
     def __repr__(self):
         return f"BankAccount({self.name},{self.account_number},{self.balance})"
 
-myAcc = BankAccount('Vikrant Singh Bhadouriya', 1000)
-
+myAcc = BankAccount('Vikrant Singh Bhadouriya')
 num = myAcc.account_number
 BankAccount.getAccountDetails(num)
