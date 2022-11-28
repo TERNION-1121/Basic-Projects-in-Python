@@ -1,7 +1,7 @@
 import random
 from numWords import *
 
-# add an investment method!
+
 class BankAccount():
     account_number = ''
     accountNumberList = ['']
@@ -44,20 +44,29 @@ class BankAccount():
             BankAccount.accounts[self.account_number]['balance'] = self.balance
 
     def invest(self, sum: int, time: int):
-        self.balance-=sum
-        rate = 10
-        amount = sum * ((1+(rate/1))**time)
-        self.balance+=amount
-        BankAccount.accounts[self.account_number]['balance'] = self.balance
+        if self.balance == 0 or self.balance < sum:
+            print("You cannot invest a sum more than your current balance! Try depositing some money first!")
+        else:
+            if self.balance <= 10000:
+                rate = 2.5
+            elif self.balance > 10000 and self.balance <=12000:
+                rate = 5
+            elif self.balance > 12000 and self.balance <= 14000:
+                rate = 7.5
+            elif self.balance > 14000 and self.balance <= 16000:
+                rate = 10
+            elif self.balance > 16000 and self.balance <= 18000:
+                rate = 12.5
+            else:
+                rate = 15
+            amount = sum * ((1+(rate/1))**time)
+            self.balance+=amount
+            BankAccount.accounts[self.account_number]['balance'] = self.balance
         
-    def transferMoney(self, accNo, amt):
+    def transferMoney(self, accNo, amt: int):
         self.balance-=amt
         BankAccount.accounts[self.account_number]['balance'] = self.balance
         BankAccount.accounts[accNo]['balance']+=amt
 
     def __repr__(self):
         return f"BankAccount({self.name},{self.account_number},{self.balance})"
-
-myAcc = BankAccount('Vikrant Singh Bhadouriya')
-num = myAcc.account_number
-BankAccount.getAccountDetails(num)
