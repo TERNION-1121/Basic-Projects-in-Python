@@ -59,7 +59,7 @@ class BankAccount():
                 rate = 12.5
             else:
                 rate = 15
-            amount = sum * ((1+(rate/1))**time)
+            amount = sum * ((1+(rate/1))**time) # compounding
             self.balance+=amount
             BankAccount.accounts[self.account_number]['balance'] = self.balance
         
@@ -70,3 +70,19 @@ class BankAccount():
 
     def __repr__(self):
         return f"BankAccount({self.name},{self.account_number},{self.balance})"
+
+myAcc = BankAccount('Vikrant Singh Bhadouriya',1000)
+acc2 = BankAccount('Suvigya Vishwakarma',2000)
+num = myAcc.account_number
+num2 = acc2.account_number
+
+BankAccount.getAccountDetails(num)
+BankAccount.getAccountDetails(num2)
+
+myAcc.transferMoney(num2, 1000)
+
+BankAccount.getAccountDetails(num)
+BankAccount.getAccountDetails(num2)
+print(acc2.balance)
+
+print(BankAccount.accounts)
