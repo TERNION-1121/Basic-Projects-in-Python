@@ -1,7 +1,11 @@
+import csv
 import random
 from numWords import *
 
-
+with open('D:\Shivy\Basic-Projects-in-Python\Project 9-Bank Account\\accounts.csv', 'w', newline='\n') as file:
+            writer = csv.writer(file)
+            writer.writerow(['Sn', 'Name', 'Account number', 'Balance'])
+sn = 1
 class BankAccount():
     account_number = ''
     accountNumberList = ['']
@@ -9,6 +13,7 @@ class BankAccount():
     first_time_balance = 1000
 
     def __init__(self, name, balance = 0):
+        global sn
         self.name = name
         self.account_number = BankAccount.newAccountNumber()
         self.balance = balance + BankAccount.first_time_balance
@@ -17,6 +22,11 @@ class BankAccount():
         BankAccount.accounts[self.account_number] = {'name': self.name,
                                                         'accNum': self.account_number,
                                                         'balance': self.balance }
+        with open('D:\Shivy\Basic-Projects-in-Python\Project 9-Bank Account\\accounts.csv', 'a', newline='\n') as file:
+            writer = csv.writer(file)
+            writer.writerow([sn, self.name, self.account_number, self.balance])
+        sn+=1
+
     @staticmethod
     def newAccountNumber():
         while BankAccount.account_number in BankAccount.accountNumberList:
@@ -33,7 +43,7 @@ class BankAccount():
             print("Please enter a valid account number!")
 
     def deposit(self, sum: int):
-        self.balance = self.balance + sum
+        self.balance+=sum
         BankAccount.accounts[self.account_number]['balance'] = self.balance
     
     def withdraw(self, sum: int):
@@ -63,26 +73,16 @@ class BankAccount():
             self.balance+=amount
             BankAccount.accounts[self.account_number]['balance'] = self.balance
         
-    def transferMoney(self, accNo, amt: int):
+    def transferMoney(self, acc: object, amt: int):
         self.balance-=amt
+        acc.balance+=amt
         BankAccount.accounts[self.account_number]['balance'] = self.balance
-        BankAccount.accounts[accNo]['balance']+=amt
+        BankAccount.accounts[acc.account_number]['balance']+=amt
 
     def __repr__(self):
         return f"BankAccount({self.name},{self.account_number},{self.balance})"
 
-myAcc = BankAccount('Vikrant Singh Bhadouriya',1000)
-acc2 = BankAccount('Suvigya Vishwakarma',2000)
-num = myAcc.account_number
-num2 = acc2.account_number
-
-BankAccount.getAccountDetails(num)
-BankAccount.getAccountDetails(num2)
-
-myAcc.transferMoney(num2, 1000)
-
-BankAccount.getAccountDetails(num)
-BankAccount.getAccountDetails(num2)
-print(acc2.balance)
-
-print(BankAccount.accounts)
+obj1 = BankAccount("Vikrant Singh Bhadouriya", 1111)
+obj2 = BankAccount("Suvgiya Vishwakarma", 3535)
+obj3 = BankAccount("Lakshya Singh Chauhan", 7777)
+obj4 = BankAccount("Kushagra Chauhan", 1040)
