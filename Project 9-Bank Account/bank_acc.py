@@ -53,7 +53,7 @@ class BankAccount():
     
     @staticmethod
     def getAccountHistory(account_num):
-        if account_num in BankAccount.accounts_history or len(BankAccount.accounts_history[account_num]) > 0:
+        if account_num in BankAccount.accounts_history and len(BankAccount.accounts_history[account_num]) > 0:
             history = BankAccount.accounts_history[account_num]
             for item in history:
                 print(item)
