@@ -5,11 +5,11 @@ from pathlib import Path
 from numWords import *
 
 # initializing global variables
-path = Path(__file__).with_name('accounts.csv') # to open the file in the same directory as the containing module
+p = Path(__file__).with_name('accounts.csv') # to open the file in the same directory as the containing module
 sn = 1
-with open(path, 'w', newline='\n') as file:
-            writer = csv.writer(file)
-            writer.writerow(['Sn', 'Name', 'Account number', 'Balance'])
+with open(p, 'w', newline='\n') as file:
+                writer = csv.writer(file)
+                writer.writerow(['Sn', 'Name', 'Account number', 'Balance'])
 
 class BankAccount():
     account_number = ''
@@ -20,7 +20,7 @@ class BankAccount():
 
     def __init__(self, name, balance = 0):
         global sn
-        global path
+        global p
         self.sn = sn-1
         self.name = name
         self.account_number = BankAccount.newAccountNumber()
@@ -30,10 +30,22 @@ class BankAccount():
         BankAccount.accounts[self.account_number] = {'name': self.name,'accNum': self.account_number,'balance': self.balance }
         BankAccount.accounts_history[self.account_number] = []
 
-        with open(path, 'a', newline='\n') as file:
+        with open(p, 'a', newline='\n') as file:
             writer = csv.writer(file)
             writer.writerow([sn, self.name, self.account_number, self.balance])
         sn+=1
+
+    @classmethod
+    def instantiateFromCSV(cls):
+        with open(p, 'r') as f:
+            reader = csv.DictReader(f)
+            items = list(reader)
+        
+        for item in items:
+            BankAccount(
+                name = item.get('name'),
+                balance = (item.get('balance'))
+            )
 
     @classmethod
     def instantiateFromStr(cls, string):
@@ -71,14 +83,14 @@ class BankAccount():
 
     @staticmethod
     def updateCSV(*args):
-            global path
-            df = pandas.read_csv(path)
+            global p
+            df = pandas.read_csv(p)
             obj1 = args[0]
             df.loc[obj1.sn, "Balance"] = obj1.balance
             if len(args) == 2:
                 obj2 = args[1]
                 df.loc[obj2.sn, "Balance"] = obj2.balance
-            df.to_csv(path, index=False)
+            df.to_csv(p, index=False)
 
     def deposit(self, sum: int):
         self.balance+=sum
@@ -136,13 +148,16 @@ class BankAccount():
     def __repr__(self):
         return f"BankAccount({self.name},{self.account_number},{self.balance})"
 
+
 obj1 = BankAccount("Vikrant Singh Bhadouriya", 1111)
 obj2 = BankAccount("Suvigya Vishwakarma", 3535)
 obj3 = BankAccount("Lakshya Singh Chauhan", 7777)
 obj4 = BankAccount("Kushagra Chauhan", 1040)
 obj5 = BankAccount.instantiateFromStr("Soumil Sachan-1221")
 obj6 = BankAccount.instantiateFromStr("Shashank Priye Tripathi")
+obj7 = BankAccount.instantiateFromStr("Shiven Sharma-4646")
 
 obj1.deposit(1000)
 obj1.withdraw(500)
+obj1.invest(1000, 1)
 obj1.transferMoney(obj3, 1001)
