@@ -4,9 +4,9 @@ import pandas
 from pathlib import Path
 from numWords import *
 
-# initializing global variables
-p = Path(__file__).with_name('accounts.csv') # to open the file in the same directory as the containing module
+
 sn = 1
+p = Path(__file__).with_name('accounts.csv') # to open the file in the same directory as the containing module
 with open(p, 'w', newline='\n') as file:
                 writer = csv.writer(file)
                 writer.writerow(['Sn', 'Name', 'Account number', 'Balance'])
@@ -18,10 +18,11 @@ class BankAccount():
     first_time_balance = 1000
     accounts_history = {}
 
-    def __init__(self, name, balance = 0):
+    def __init__(self, name, balance = 0, s = None):
         global sn
         global p
-        self.sn = sn-1
+        serialNum = s if s else sn
+        self.sn = serialNum-1
         self.name = name
         self.account_number = BankAccount.newAccountNumber()
         self.balance = balance + BankAccount.first_time_balance
@@ -34,18 +35,6 @@ class BankAccount():
             writer = csv.writer(file)
             writer.writerow([sn, self.name, self.account_number, self.balance])
         sn+=1
-
-    @classmethod
-    def instantiateFromCSV(cls):
-        with open(p, 'r') as f:
-            reader = csv.DictReader(f)
-            items = list(reader)
-        
-        for item in items:
-            BankAccount(
-                name = item.get('name'),
-                balance = (item.get('balance'))
-            )
 
     @classmethod
     def instantiateFromStr(cls, string):
@@ -156,8 +145,3 @@ obj4 = BankAccount("Kushagra Chauhan", 1040)
 obj5 = BankAccount.instantiateFromStr("Soumil Sachan-1221")
 obj6 = BankAccount.instantiateFromStr("Shashank Priye Tripathi")
 obj7 = BankAccount.instantiateFromStr("Shiven Sharma-4646")
-
-obj1.deposit(1000)
-obj1.withdraw(500)
-obj1.invest(1000, 1)
-obj1.transferMoney(obj3, 1001)
