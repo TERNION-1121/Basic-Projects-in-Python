@@ -18,11 +18,10 @@ class BankAccount():
     first_time_balance = 1000
     accounts_history = {}
 
-    def __init__(self, name, balance = 0, s = None):
+    def __init__(self, name, balance = 0):
         global sn
         global p
-        serialNum = s if s else sn
-        self.sn = serialNum-1
+        self.sn = sn
         self.name = name
         self.account_number = BankAccount.newAccountNumber()
         self.balance = balance + BankAccount.first_time_balance
@@ -137,11 +136,16 @@ class BankAccount():
     def __repr__(self):
         return f"BankAccount({self.name},{self.account_number},{self.balance})"
 
-
 obj1 = BankAccount("Vikrant Singh Bhadouriya", 1111)
 obj2 = BankAccount("Suvigya Vishwakarma", 3535)
 obj3 = BankAccount("Lakshya Singh Chauhan", 7777)
-obj4 = BankAccount("Kushagra Chauhan", 1040)
-obj5 = BankAccount.instantiateFromStr("Soumil Sachan-1221")
-obj6 = BankAccount.instantiateFromStr("Shashank Priye Tripathi")
-obj7 = BankAccount.instantiateFromStr("Shiven Sharma-4646")
+obj4 = BankAccount.instantiateFromStr("Soumil Sachan-1221")
+obj5 = BankAccount.instantiateFromStr("Shashank Priye Tripathi")
+obj6 = BankAccount.instantiateFromStr("Mridul Singh-4646")
+
+obj1.deposit(1000)
+obj2.invest(1000, 3)
+obj3.transferMoney(obj5, 2777)
+obj4.withdraw(40)
+obj5.invest(4646, 10)
+print(BankAccount.accounts_history)
