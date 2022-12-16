@@ -16,6 +16,7 @@ It consists of different sub-folders which consist of one **Python file**, accom
 6. Project 6: [Simple Countdown Timer](https://github.com/TERNION-1121/Basic-Projects-in-Python/tree/main/Project%206-%20Simple%20Countdown%20Timer)
 7. Project 7: [Email Slicer](https://github.com/TERNION-1121/Basic-Projects-in-Python/tree/main/Project%207-%20Email%20Slicer)
 8. Project 8: [Hangman Game](https://github.com/TERNION-1121/Basic-Projects-in-Python/tree/main/Project%208-%20Hangman%20Game)
+9. Project 9: [Bank Account](https://github.com/TERNION-1121/Basic-Projects-in-Python/tree/main/Project%209-Bank%20Account)
 <br>
 <hr>
 
