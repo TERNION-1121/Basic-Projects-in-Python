@@ -1,5 +1,5 @@
 from plyer import notification
-import requests, json, datetime, time
+import requests, datetime, time, os
 
 def formatted_hour(hr):
     if 11 >= hr > 0:
@@ -20,6 +20,11 @@ def formatted_wind_dir(wd):
             formatted_str += 'West'
         case 'S':
             formatted_str += 'South'
+    match wd[-1]:
+        case 'E':
+            formatted_str += 'East'
+        case 'W':
+            formatted_str += 'West'
     return formatted_str
 
 MONTHS      = [None, 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -44,7 +49,7 @@ while True:
 {current['wind_kph']}kmph winds from the {formatted_wind_dir(current['wind_dir'])}\n\
 Feels like {current['feelslike_c']} °C\nPrecipation: {current['precip_mm']}mm",
                 app_name= "Weather Notifier",
-                app_icon= "weather_logo.ico",
+                app_icon= os.path.dirname(__file__) + r"/weather_logo.ico",
                 timeout= 20
             )
 
@@ -53,6 +58,6 @@ Feels like {current['feelslike_c']} °C\nPrecipation: {current['precip_mm']}mm",
                 title   = "Error encountered",
                 message = f"An error was encountered.\nFailed to fetch weather data.",
                 app_name= "Weather Notifier",
-                app_icon= "weather_logo.ico"
+                app_icon= os.path.dirname(__file__) + r"/weather_logo.ico"
             )
         init_time = time.time()
