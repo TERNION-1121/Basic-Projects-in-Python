@@ -18,6 +18,7 @@ It consists of different sub-folders which consist of one **Python file**, accom
 8. Project 8: [Hangman Game](https://github.com/TERNION-1121/Basic-Projects-in-Python/tree/main/Project%208-%20Hangman%20Game/hangman.md)
 9. Project 9: [Bank Account](https://github.com/TERNION-1121/Basic-Projects-in-Python/tree/main/Project%209-Bank%20Account/bank_acc.md)
 10. Project 10: [Sudoku Validator](https://github.com/TERNION-1121/Basic-Projects-in-Python/blob/main/Project%2010-%20Sudoku%20Validator/sudoku_validator.md)
+11. Project 11: [Weather Notifier](https://github.com/TERNION-1121/Basic-Projects-in-Python/tree/main/Project%2011-%20Desktop%20Weather%20Notifier/weather_notifier.md)
 <br>
 <hr>
 
