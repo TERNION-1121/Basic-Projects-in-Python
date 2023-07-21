@@ -30,7 +30,7 @@ def formatted_wind_dir(wd):
 MONTHS      = [None, 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
  
 BASE_URL    = "https://api.weatherapi.com/v1/current.json"
-API_KEY     = "a7dba08a38144c5bb6b153215231405"
+API_KEY     = "" # your API key from weatherapi.com
 CITY        = "Haridwar"
 REQUEST_URL = f"{BASE_URL}?key={API_KEY}&q={CITY}&aqi=no"
 
