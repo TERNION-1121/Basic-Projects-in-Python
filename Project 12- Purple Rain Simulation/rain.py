@@ -20,7 +20,7 @@ class RainDrop:
         self.y += self.yspeed
         self.yspeed += self.yspeed * 0.01   # more the speed, more the acceleration (correlates to line 17)
         
-        if self.y > WIDTH:                  # drop falls below the screen
+        if self.y > WIDTH:  # drop falls below the screen
             self.x = WIDTH * random.random()    # reset the    
             self.y = random.randint(-500, -50)  # position
             

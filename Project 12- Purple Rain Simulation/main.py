@@ -6,7 +6,9 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 screen.fill(BACKGROUND)
 pygame.display.flip()
 
-pygame.mixer.music.load("soft-rain-ambient-111154.mp3")
+pygame.display.set_caption("Purple Rain")
+
+pygame.mixer.music.load("Project 12- Purple Rain Simulation/soft-rain-ambient.mp3")
 pygame.mixer.music.play()
 
 rain_drops = [RainDrop() for _ in range(750)]
