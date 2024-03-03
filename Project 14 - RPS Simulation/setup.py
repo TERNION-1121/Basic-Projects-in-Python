@@ -6,21 +6,26 @@ from pygame import Vector2
 
 BG = (25, 25, 25)
 
-SCREEN_SIZE = (500, 500)
+SCREEN_SIZE = (800, 450)
 
 SPRITE_SIZE = (20, 20)
 
 class Mover(pygame.sprite.Sprite):
     GROUP = pygame.sprite.Group()
+    IMAGE = None 
 
-    def __init__(self, path: str, pos = None) -> None:
+    @classmethod
+    def init_image(cls, path: str):
+        cls.IMAGE = pygame.transform.scale(pygame.image.load(path).convert_alpha(), SPRITE_SIZE)
+
+    def __init__(self, pos = None) -> None:
         super().__init__()
 
-        self.position = Vector2(pos) if pos else Mover.rand_pos(SCREEN_SIZE)
+        self.position: Vector2 = Vector2(pos) if pos else Mover.rand_pos(SCREEN_SIZE)
         self.velocity = Mover.random_vector() * 20
         self.acceleration = Mover.random_vector() * 10
 
-        self.image = pygame.transform.scale(pygame.image.load(f"{path}.png").convert_alpha(), SPRITE_SIZE)
+        self.image = self.IMAGE
         self.rect = self.image.get_rect()
         self.rect.center = self.position
 
@@ -44,14 +49,22 @@ class Mover(pygame.sprite.Sprite):
 
     def check_screen_bounds(self, screen_dim: tuple, dt: int):
         width, height = screen_dim
-
-        if self.rect.left <= 0 or self.rect.right >= width:
+        # sprite collides with left edge
+        if self.rect.left <= 0:
             self.velocity.x *= -1
-            self.position += self.velocity * dt * 4
-
-        if self.rect.top <= 0 or self.rect.bottom >= height:
+            self.position.x = self.rect.width / 2 + 1
+        # sprite collides with right edge
+        if self.rect.right >= width:
+            self.velocity.x *= -1
+            self.position.x = width - self.rect.width / 2 - 1
+        # sprite collides with top edge
+        if self.rect.top <= 0:
             self.velocity.y *= -1
-            self.position += self.velocity * dt * 4
+            self.position.y = self.rect.height / 2 + 1
+        # sprite collides with bottom edge
+        if self.rect.bottom >= height:
+            self.velocity *= -1
+            self.position.y = height - self.rect.height / 2 - 1
     
     def handle_collision(self) -> None:
         collided = pygame.sprite.spritecollide(self, GRAPH[self.__class__.__name__].GROUP, dokill=True)
@@ -71,7 +84,7 @@ class Mover(pygame.sprite.Sprite):
     @staticmethod
     def rand_pos(screen_dim: tuple[int, int]) -> Vector2:
         width, height = screen_dim
-        return Vector2(uniform(0.1, 0.9) * width, uniform(0.1, 0.9) * height)
+        return Vector2(uniform(0.01, 0.99) * width, uniform(0.01, 0.99) * height)
 
     @classmethod
     def generate_objects(cls, n: int) -> None:
@@ -93,7 +106,7 @@ class Rock(Mover):
     GROUP = pygame.sprite.Group()
     
     def __init__(self, pos = None) -> None:
-        super().__init__("rock", pos)
+        super().__init__(pos)
         Rock.GROUP.add(self)
 
     @classmethod
@@ -104,7 +117,7 @@ class Paper(Mover):
     GROUP = pygame.sprite.Group()
 
     def __init__(self, pos = None) -> None:
-        super().__init__("paper", pos)
+        super().__init__(pos)
         Paper.GROUP.add(self)
 
     @classmethod
@@ -115,7 +128,7 @@ class Scissor(Mover):
     GROUP = pygame.sprite.Group()
 
     def __init__(self, pos = None) -> None:
-        super().__init__("scissor", pos)
+        super().__init__(pos)
         Scissor.GROUP.add(self)
 
     @classmethod
