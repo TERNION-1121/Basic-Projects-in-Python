@@ -13,9 +13,10 @@ clock = pygame.time.Clock()
 pygame.display.set_caption("RPS Warfare")
 pygame.display.flip()
 
-Rock.generate_objects(10)
-Paper.generate_objects(10)
-Scissor.generate_objects(10)
+Rock.generate_objects(2)
+Paper.generate_objects(2)
+Scissor.generate_objects(2)
+
 
 running = True
 prev_time = time()
