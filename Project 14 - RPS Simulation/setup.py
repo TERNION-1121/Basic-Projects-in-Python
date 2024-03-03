@@ -30,7 +30,7 @@ class Mover(pygame.sprite.Sprite):
         self.check_screen_bounds(SCREEN_SIZE, dt)
         # update acceleration
         enemy_position = Vector2(GRAPH[self.__class__.__name__].get_nearest_vector(self.position))
-        self.acceleration += (enemy_position - self.position) + Mover.random_vector() if random() > 0.5 else Vector2(0,0)
+        self.acceleration = (enemy_position - self.position) + Mover.random_vector() if random() > 0.25 else Vector2(0,0)
         Mover.limit_vector(self.acceleration, 20)
         # update velocity
         self.velocity += self.acceleration * dt
@@ -47,11 +47,11 @@ class Mover(pygame.sprite.Sprite):
 
         if self.rect.left <= 0 or self.rect.right >= width:
             self.velocity.x *= -1
-            self.position += self.velocity * dt * 2
+            self.position += self.velocity * dt * 4
 
         if self.rect.top <= 0 or self.rect.bottom >= height:
             self.velocity.y *= -1
-            self.position += self.velocity * dt * 2
+            self.position += self.velocity * dt * 4
     
     def handle_collision(self) -> None:
         collided = pygame.sprite.spritecollide(self, GRAPH[self.__class__.__name__].GROUP, dokill=True)
