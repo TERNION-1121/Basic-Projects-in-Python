@@ -6,16 +6,16 @@ from setup import *
 
 pygame.init()
 screen = pygame.display.set_mode(SCREEN_SIZE)
-screen.fill(BLACK)
+screen.fill(BG)
+
 clock = pygame.time.Clock()
+
 pygame.display.set_caption("RPS Warfare")
 pygame.display.flip()
 
-Rock.generate_objects(20)
-Paper.generate_objects(20)
-Scissor.generate_objects(20)
-
-r = Sprite("rock", (250, 250))
+Rock.generate_objects(10)
+Paper.generate_objects(10)
+Scissor.generate_objects(10)
 
 running = True
 prev_time = time()
@@ -29,19 +29,11 @@ while running:
         if event.type == pygame.QUIT:
             running = False
     
-    screen.fill(BLACK)
-    r.update(screen)
-    # Rock.show_all(screen)
-    # Paper.show_all(screen)
-    # Scissor.show_all(screen)
-
-    # Rock.draw_centroid(screen)
-    # Paper.draw_centroid(screen)
-    # Scissor.draw_centroid(screen)
-
-    # Rock.update_all(dt)
-    # Paper.update_all(dt)
-    # Scissor.update_all(dt)
+    screen.fill(BG)
+    
+    Rock.GROUP.update(screen, dt)
+    Paper.GROUP.update(screen, dt)
+    Scissor.GROUP.update(screen, dt)
 
     pygame.display.flip()
     clock.tick(60)

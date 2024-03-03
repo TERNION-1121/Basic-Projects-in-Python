@@ -4,54 +4,55 @@ from random import random, uniform
 import pygame 
 from pygame import Vector2
 
+# colors
 WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
+BG = (25, 25, 25)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
 SCREEN_SIZE = (500, 500)
-SCREEN_MID = Vector2(0, 0)
 
-class Mover():
+SPRITE_SIZE = (20, 20)
+
+class Mover(pygame.sprite.Sprite):
     COLOR = WHITE
-    objects = list()
+    GROUP = pygame.sprite.Group()
 
-    def __init__(self, pos = None) -> None:
-        if not pos:
-            self.position = Mover.rand_pos(SCREEN_SIZE)
-        else:
-            self.position = Vector2(pos)
+    def __init__(self, path: str, pos = None) -> None:
+        super().__init__()
 
-        self.velocity = Mover.random_vector() * 25
+        self.position = Vector2(pos) if pos else Mover.rand_pos(SCREEN_SIZE)
+        self.velocity = Mover.random_vector() * 20
+        self.acceleration = Mover.random_vector() * 10
 
-    def update(self, dt: int) -> None:
-        self.acceleration = Mover.random_vector()
+        self.image = pygame.transform.scale(pygame.image.load(f"{path}.png").convert_alpha(), SPRITE_SIZE)
+
+    def update(self, screen: pygame.Surface, dt: int) -> None:
+        self.position += self.velocity * dt
+        self.check_screen_bounds(SCREEN_SIZE)
 
         enemy_position = Vector2(GRAPH[self.__class__.__name__].get_nearest_vector(self.position))
         self.acceleration += (enemy_position - self.position)
+        Mover.limit_vector(self.acceleration, 20)
 
-        self.acceleration.scale_to_length(5)
-
-        self.position += self.velocity * dt
-        self.limit_velocity()
-        self.check_screen_bounds(SCREEN_SIZE)
         self.velocity += self.acceleration * dt
+        Mover.limit_vector(self.velocity, 40)
 
-    def limit_velocity(self) -> None:
-        if self.velocity.magnitude() > 50:
-            self.velocity.scale_to_length(50)
+        screen.blit(self.image, self.image.get_rect(center=self.position))
 
     def check_screen_bounds(self, screen_dim: tuple):
         width, height = screen_dim
 
-        if self.position.x <= 0 or self.position.x > width:
+        if self.position.x <= 10 or self.position.x > width - 10:
             self.velocity.x *= -1
-        if self.position.y <= 0 or self.position.y > height:
+        if self.position.y <= 10 or self.position.y > height - 10:
             self.velocity.y *= -1
-
-    def show(self, screen) -> None:
-        pygame.draw.circle(screen, self.COLOR, self.position, 5)
+    
+    @staticmethod
+    def limit_vector(vector: Vector2, length) -> None:
+        if vector.magnitude() > length:
+            vector.scale_to_length(length)
 
     @staticmethod
     def random_vector() -> Vector2:
@@ -63,16 +64,6 @@ class Mover():
         return Vector2(random() * (screen_dim[0] - 10), random() * (screen_dim[1] - 10))
 
     @classmethod
-    def show_all(cls, screen) -> None:
-        for obj in cls.objects:
-            obj.show(screen)
-
-    @classmethod
-    def update_all(cls, dt: int) -> None:
-        for obj in cls.objects:
-            obj.update(dt)
-
-    @classmethod
     def generate_objects(cls, n: int) -> None:
         for _ in range(n):
             cls()
@@ -81,101 +72,47 @@ class Mover():
     def get_nearest_vector(cls, v: Vector2) -> Vector2:
         min_distance = Vector2(SCREEN_SIZE).length()
         to_return = v
-        for obj in cls.objects:
-            if (current_distance := v.distance_to(obj.position)) < min_distance:
+
+        for sprite in cls.GROUP:
+            if (current_distance := v.distance_to(sprite.position)) < min_distance:
                 min_distance = current_distance 
-                to_return = obj.position
+                to_return = sprite.position
         return to_return
-    
-    @classmethod
-    def get_centroid(cls) -> Vector2:
-        return Vector2(sum([obj.position for obj in cls.objects], start= Vector2()) / len(cls.objects))
-    
-    @classmethod
-    def draw_centroid(cls, screen) -> None:
-        pygame.draw.circle(screen, cls.COLOR, cls.get_centroid(), 10)
 
 class Rock(Mover):
     COLOR = RED
-    objects = list()
+    GROUP = pygame.sprite.Group()
     
     def __init__(self, pos = None) -> None:
-        super().__init__(pos)
-        Rock.objects.append(self)
-
-    @classmethod
-    def show_all(cls, screen) -> None:
-        super(Rock, cls).show_all(screen)
+        super().__init__("rock", pos)
+        Rock.GROUP.add(self)
 
     @classmethod
     def generate_objects(cls, n: int) -> None:
         super(Rock, cls).generate_objects(n)
 
-    @classmethod
-    def get_centroid(cls) -> Vector2:
-        return super(Rock, cls).get_centroid()
-    
-    @classmethod
-    def draw_centroid(cls, screen) -> None:
-        super(Rock, cls).draw_centroid(screen)
-
 class Paper(Mover):
     COLOR = GREEN
-    objects = list()
+    GROUP = pygame.sprite.Group()
 
     def __init__(self, pos = None) -> None:
-        super().__init__(pos)
-        Paper.objects.append(self)
-    
-    @classmethod
-    def show_all(cls, screen) -> None:
-        super(Paper, cls).show_all(screen)
+        super().__init__("paper", pos)
+        Paper.GROUP.add(self)
 
     @classmethod
     def generate_objects(cls, n: int) -> None:
         super(Paper, cls).generate_objects(n)
 
-    @classmethod
-    def get_centroid(cls) -> Vector2:
-        return super(Paper, cls).get_centroid()
-    
-    @classmethod
-    def draw_centroid(cls, screen) -> None:
-        super(Paper, cls).draw_centroid(screen)
-
 class Scissor(Mover):
     COLOR = BLUE
-    objects = list()
+    GROUP = pygame.sprite.Group()
 
     def __init__(self, pos = None) -> None:
-        super().__init__(pos)
-        Scissor.objects.append(self)
-
-    @classmethod
-    def show_all(cls, screen) -> None:
-        super(Scissor, cls).show_all(screen)
+        super().__init__("scissor", pos)
+        Scissor.GROUP.add(self)
 
     @classmethod
     def generate_objects(cls, n: int) -> None:
         super(Scissor, cls).generate_objects(n)
-
-    @classmethod
-    def get_centroid(cls) -> Vector2:
-        return super(Scissor, cls).get_centroid()
-    
-    @classmethod
-    def draw_centroid(cls, screen) -> None:
-        super(Scissor, cls).draw_centroid(screen)
-
-class Sprite(pygame.sprite.Sprite):
-    def __init__(self, path: str, position) -> None:
-        super().__init__()
-        self.image = pygame.transform.scale(pygame.image.load(f"{path}.png").convert_alpha(), (20, 20))
-        self.position = position
-        self.rect = self.image.get_rect(center=self.position)
-    
-    def update(self, screen: pygame.Surface):
-        screen.blit(self.image, self.rect)
         
-
 GRAPH = {"Rock": Scissor, "Paper": Rock, "Scissor": Paper, "Mover": Mover}
