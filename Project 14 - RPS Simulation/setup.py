@@ -13,10 +13,20 @@ SPRITE_SIZE = (20, 20)
 class Mover(pygame.sprite.Sprite):
     GROUP = pygame.sprite.Group()
     IMAGE = None 
+    SOUND = None 
 
     @classmethod
     def init_image(cls, path: str):
         cls.IMAGE = pygame.transform.scale(pygame.image.load(path).convert_alpha(), SPRITE_SIZE)
+
+    @classmethod 
+    def init_sound(cls, path: str):
+        cls.SOUND = pygame.mixer.Sound(path)
+
+    @classmethod
+    def generate_objects(cls, n: int) -> None:
+        for _ in range(n):
+            cls()
 
     def __init__(self, pos = None) -> None:
         super().__init__()
@@ -32,7 +42,7 @@ class Mover(pygame.sprite.Sprite):
     def update(self, screen: pygame.Surface, dt: int) -> None:
         # update position
         self.position += self.velocity * dt
-        self.check_screen_bounds(SCREEN_SIZE, dt)
+        self.check_screen_bounds(SCREEN_SIZE)
         # update acceleration
         enemy_position = Vector2(GRAPH[self.__class__.__name__].get_nearest_vector(self.position))
         self.acceleration = (enemy_position - self.position) + Mover.random_vector() if random() > 0.25 else Vector2(0,0)
@@ -47,7 +57,7 @@ class Mover(pygame.sprite.Sprite):
         self.handle_collision()
         screen.blit(self.image, self.rect)
 
-    def check_screen_bounds(self, screen_dim: tuple, dt: int):
+    def check_screen_bounds(self, screen_dim: tuple) -> None:
         width, height = screen_dim
         # sprite collides with left edge
         if self.rect.left <= 0:
@@ -70,6 +80,7 @@ class Mover(pygame.sprite.Sprite):
         collided = pygame.sprite.spritecollide(self, GRAPH[self.__class__.__name__].GROUP, dokill=True)
         for sprite in collided:
             self.__class__.GROUP.add(self.__class__(sprite.position))
+            pygame.mixer.Sound.play(self.SOUND)
             
     @staticmethod
     def limit_vector(vector: Vector2, length) -> None:
@@ -87,11 +98,6 @@ class Mover(pygame.sprite.Sprite):
         return Vector2(uniform(0.01, 0.99) * width, uniform(0.01, 0.99) * height)
 
     @classmethod
-    def generate_objects(cls, n: int) -> None:
-        for _ in range(n):
-            cls()
-
-    @classmethod
     def get_nearest_vector(cls, v: Vector2) -> Vector2:
         min_distance = Vector2(SCREEN_SIZE).length()
         to_return = v
@@ -104,7 +110,7 @@ class Mover(pygame.sprite.Sprite):
 
 class Rock(Mover):
     GROUP = pygame.sprite.Group()
-    
+
     def __init__(self, pos = None) -> None:
         super().__init__(pos)
         Rock.GROUP.add(self)
