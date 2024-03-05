@@ -10,6 +10,7 @@ SCREEN_SIZE = (800, 450)
 
 SPRITE_SIZE = (20, 20)
 
+
 class Mover(pygame.sprite.Sprite):
     GROUP = pygame.sprite.Group()
     IMAGE = None 
@@ -28,7 +29,7 @@ class Mover(pygame.sprite.Sprite):
         for _ in range(n):
             cls()
 
-    def __init__(self, pos = None) -> None:
+    def __init__(self, pos=None) -> None:
         super().__init__()
 
         self.position: Vector2 = Vector2(pos) if pos else Mover.rand_pos(SCREEN_SIZE)
@@ -45,7 +46,8 @@ class Mover(pygame.sprite.Sprite):
         self.check_screen_bounds(SCREEN_SIZE)
         # update acceleration
         enemy_position = Vector2(GRAPH[self.__class__.__name__].get_nearest_vector(self.position))
-        self.acceleration = (enemy_position - self.position) + Mover.random_vector() if random() > 0.25 else Vector2(0,0)
+        self.acceleration = (enemy_position - self.position)
+        self.acceleration += Mover.random_vector() if random() > 0.25 else Vector2(0, 0)
         Mover.limit_vector(self.acceleration, 20)
         # update velocity
         self.velocity += self.acceleration * dt
@@ -108,10 +110,11 @@ class Mover(pygame.sprite.Sprite):
                 to_return = sprite.position
         return to_return
 
+
 class Rock(Mover):
     GROUP = pygame.sprite.Group()
 
-    def __init__(self, pos = None) -> None:
+    def __init__(self, pos=None) -> None:
         super().__init__(pos)
         Rock.GROUP.add(self)
 
@@ -119,10 +122,11 @@ class Rock(Mover):
     def generate_objects(cls, n: int) -> None:
         super(Rock, cls).generate_objects(n)
 
+
 class Paper(Mover):
     GROUP = pygame.sprite.Group()
 
-    def __init__(self, pos = None) -> None:
+    def __init__(self, pos=None) -> None:
         super().__init__(pos)
         Paper.GROUP.add(self)
 
@@ -130,15 +134,17 @@ class Paper(Mover):
     def generate_objects(cls, n: int) -> None:
         super(Paper, cls).generate_objects(n)
 
+
 class Scissor(Mover):
     GROUP = pygame.sprite.Group()
 
-    def __init__(self, pos = None) -> None:
+    def __init__(self, pos=None) -> None:
         super().__init__(pos)
         Scissor.GROUP.add(self)
 
     @classmethod
     def generate_objects(cls, n: int) -> None:
         super(Scissor, cls).generate_objects(n)
-        
+
+
 GRAPH = {"Rock": Scissor, "Paper": Rock, "Scissor": Paper, "Mover": Mover}

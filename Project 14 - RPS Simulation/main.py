@@ -1,8 +1,9 @@
-from time import time
-import pygame
 from setup import *
 
+
 def main():
+    from time import time
+    import pygame
 
     pygame.init()
     screen = pygame.display.set_mode(SCREEN_SIZE)
@@ -24,7 +25,6 @@ def main():
     Rock.generate_objects(30)
     Paper.generate_objects(30)
     Scissor.generate_objects(30)
-
 
     running = True
     prev_time = time()
@@ -48,6 +48,7 @@ def main():
         clock.tick(60)
 
     pygame.quit()
+
 
 if __name__ == "__main__":
     main()
